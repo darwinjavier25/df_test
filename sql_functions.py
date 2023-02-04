@@ -1,0 +1,33 @@
+from pyspark.sql import SparkSession
+from pyspark.sql import functions as func
+from pyspark.sql.functions import col, desc, first
+
+spark = SparkSession.builder.appName("df_test").getOrCreate()
+
+employe_df = spark.read.option("header", True).option("inferSchema", True).csv("/home/dw/python/data_frames/empl_test_df.csv")
+dep_df = spark.read.option("header", True).option("inferSchema", True).csv("/home/dw/python/data_frames/dep_test_df.csv")
+print("*****ORDER BY FUNCTION*****")
+print("First method")
+employe_df.orderBy(desc("salary")).show()
+print("Second method")
+employe_df.orderBy(employe_df["salary"].desc()).show()
+print("*****MAX FUNCTION*****")
+print("Without explicit field")
+employe_df.select("emp_id", "salary").groupBy("emp_id").max().show()
+print("TempTable")
+employe_df.createOrReplaceTempView("temp_table")
+df_from_temp = spark.sql("select * from temp_table where salary = (select max(salary) from temp_table)")
+df_from_temp.show()
+print("max salary only one field")
+max_df = employe_df.select(func.max(employe_df.salary).alias("salary"))
+max_df.show()
+print("max salary with employe_id")
+max_emp_df = employe_df.select(col("emp_id"), col("salary")).groupBy("emp_id").max("salary").sort(desc("max(salary)"))
+max_emp_df.show(1)
+print("Group By + sum")
+employe_df.groupBy("emp_id").sum("salary").show()
+print("Group By + agg + sum")
+sum_grouped = employe_df.groupBy("emp_id")
+sum_grouped.agg({'salary':'sum'}).show()
+print("Group By + agg + max")
+sum_grouped.agg({'salary':'max'}).show()
