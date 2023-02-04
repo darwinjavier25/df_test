@@ -4,8 +4,8 @@ from pyspark.sql.functions import col, desc, first
 
 spark = SparkSession.builder.appName("df_test").getOrCreate()
 
-employe_df = spark.read.option("header", True).option("inferSchema", True).csv("/home/dw/python/data_frames/empl_test_df.csv")
-dep_df = spark.read.option("header", True).option("inferSchema", True).csv("/home/dw/python/data_frames/dep_test_df.csv")
+employe_df = spark.read.option("header", True).option("inferSchema", True).csv("./resources/empl_test_df.csv")
+dep_df = spark.read.option("header", True).option("inferSchema", True).csv("./resources/dep_test_df.csv")
 print("*****ORDER BY FUNCTION*****")
 print("First method")
 employe_df.orderBy(desc("salary")).show()
