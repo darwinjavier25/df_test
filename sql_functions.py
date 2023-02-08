@@ -1,6 +1,6 @@
 from pyspark.sql import SparkSession
 from pyspark.sql import functions as func
-from pyspark.sql.functions import col, desc, first
+from pyspark.sql.functions import col, desc
 
 spark = SparkSession.builder.appName("df_test").getOrCreate()
 
@@ -24,6 +24,7 @@ max_df.show()
 print("max salary with employe_id")
 max_emp_df = employe_df.select(col("emp_id"), col("salary")).groupBy("emp_id").max("salary").sort(desc("max(salary)"))
 max_emp_df.show(1)
+print("******GROUP BY******")
 print("Group By + sum")
 employe_df.groupBy("emp_id").sum("salary").show()
 print("Group By + agg + sum")

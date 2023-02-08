@@ -30,3 +30,10 @@ def prime(p):
 
 prime(num)
 
+def prime2(m):
+    if m % 2 == 0:
+        return print("par")
+    else:
+        return print("impar")
+
+prime2(37)
