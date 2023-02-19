@@ -21,8 +21,7 @@ schema = StructType([
     StructField("alpha_two_code", StringType(), True),
     StructField("name", StringType(), True),
     StructField("country", StringType(), True),
-    StructField("domains", StringType(), True)
-])
+    StructField("domains", StringType(), True)])
 
 all_df = json.loads(response.content) #BW
 rdd = spark.sparkContext.parallelize(all_df) #BW
